@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ErrorHandling</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+
+    <!-- Error Handling -->
+    <string name="no_connection">You are offline. Check your connectivity.</string>
+    <string name="error_timeout">Looks like this takes more time than expected. Please try again.</string>
+    <string name="error_parsing_short">Sorry, something went wrong. If the issue persists, please contact us.</string>
+    <string name="error_internal_server_error_short">Something went wrong. If the error persists please contact us.</string>
+    <string name="error_something_went_wrong">Sorry, something went wrong.</string>
+    <string name="error_generic_unauthorized">You need to be authenticated in order to access this. Please log in.</string>
+    <string name="error_generic_forbidden">You don’t have the right credentials to access this.</string>
+    <string name="error_generic_not_found">We haven\'t found what you are looking for.</string>
+    <string name="error_invalid_credentials">The entered credentials are invalid</string>
+    <string name="error_username_taken">This username is already in use. Please choose another.</string>
+    <string name="try_again">Try Again</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="get_users">Get users</string>
+</resources>
