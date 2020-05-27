@@ -4,8 +4,8 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
 
+    api project(":error-handler-core")
     api project(':error-handler-rest')
-    implementation project(":error-handler-core")
 
     // Kotlin + Coroutines
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
