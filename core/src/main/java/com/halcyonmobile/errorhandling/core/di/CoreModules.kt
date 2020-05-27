@@ -9,7 +9,6 @@ import com.halcyonmobile.errorhandling.core.usecase.GetUsersUseCase
 import com.halcyonmobile.errorhandling.core.usecase.LoginUseCase
 import com.halcyonmobile.errorhandling.core.usecase.RegisterUseCase
 import com.halcyonmobile.errorhandling.error.DemoAppApiErrorConverter
-import com.halcyonmobile.errorhandling.error.DemoErrorLogger
 import com.halcyonmobile.errorhandling.util.DemoJsonDataExceptionToSerializationConverter
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +17,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 fun provideCoreModules(baseUrl: String, enableHttpLogging: Boolean) =
-    provideNetworkingModule(baseUrl, enableHttpLogging) + provideRemoteSourceModule() + provideUseCaseModule()
+    provideNetworkingModule(
+        baseUrl,
+        enableHttpLogging
+    ) + provideRemoteSourceModule() + provideUseCaseModule()
 
 internal fun provideNetworkingModule(baseUrl: String, enableHttpLogging: Boolean) = module {
     single {
@@ -35,7 +37,7 @@ internal fun provideNetworkingModule(baseUrl: String, enableHttpLogging: Boolean
                 RestHandlerCallAdapter.Builder()
                     .addParsedErrorConverter(DemoAppApiErrorConverter())
                     .addSerializationConverter(DemoJsonDataExceptionToSerializationConverter())
-                    .addNetworkErrorLogger(DemoErrorLogger())
+                    .addNetworkErrorLogger(get())
                     .build()
             )
             .build()

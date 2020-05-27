@@ -37,7 +37,7 @@ internal class NetworkExceptionToDataLayerExceptionConverter(
             is NoNetworkException -> NoConnectionError(networkException.cause)
             else -> {
                 when (val cause = networkException.cause) {
-                    is SocketTimeoutException -> ConnectionTimedOutError(message = "Time out", cause = cause)
+                    is SocketTimeoutException -> ConnectionTimedOutError(cause = cause)
                     is HttpException -> handleHttpException(networkException.parsedError, cause)
                     else -> ServerCommunicationException(cause?.message, cause)
                 }
@@ -53,9 +53,9 @@ internal class NetworkExceptionToDataLayerExceptionConverter(
             apiErrorMapper.convert(parsedError)
         } else {
             if (httpException.code() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                InternalServerError()
+                InternalServerError(httpException.message(), cause = httpException)
             } else {
-                ErrorPayloadParsingException(httpException.code())
+                ErrorPayloadParsingException(httpException.code(), httpException)
             }
         }
     }

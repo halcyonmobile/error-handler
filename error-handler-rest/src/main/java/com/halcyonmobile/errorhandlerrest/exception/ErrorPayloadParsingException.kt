@@ -16,4 +16,4 @@ import com.halcyonmobile.errorhandlerrest.util.HttpStatusCode
 class ErrorPayloadParsingException(
     val statusCode: HttpStatusCode,
     cause: Throwable? = null
-) : RemoteException(null, cause), Loggable
+) : RemoteException(cause?.message, cause), Loggable
