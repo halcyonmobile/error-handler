@@ -8,3 +8,6 @@ dependencies {
 
 sourceCompatibility = "8"
 targetCompatibility = "8"
+
+project.ext.set("libraryArtifactId", "core")
+apply plugin: 'com.halcyonmobile.plugin.publish.artifactory.jar-library'
