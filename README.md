@@ -80,3 +80,68 @@ Retrofit.Builder()
     - Nothing is easier than that. Just make sure that your custom exception implements the Loggable interface, and the rest is handled during the error conversion. Every RemoteException which implements the Loggable interface is guaranteed to be logged.
   - **I don’t want to handle all of the possible exceptions with `try {} catch() {}` outside the data layer.**
     - In this case, you can use the ResultWrapper from the error-handler-core together with the wrapToResult helper function, if you don’t already have such a mechanism in your project.
+    
+    
+
+## Error handling Recommendations with tips & tricks
+
+The following recommendation works best with MVVM architecture and a separate data layer and with coroutines.
+
+#### Data Layer
+
+In the Data Layer, each inner method or layer (if there are multiple layers, ex. use-cases) should annotate its methods with the corresponding @Throws annotation and it should throw the exception instead of wrapping it in any kind of wrapper to make it easier to combine method calls without ending up nesting method calls. Only the use-case, or the last step before sending back the result to the ViewModel, should wrap the result. 
+
+The data layer should define a root exception for all data related exceptions, with **error-handler** library this is the `DataLayerException`, from **error-handler-core**. For remote sources, a child hierarchy can be created, in our case, this is the `RemoteException`, from **error-handler-rest**, and a remote source (together with the Retrofit service) should throw only
+remote-related exceptions. Other layers from the data layer, which are not related to remote, should be annotated with the more generic `DataLayerException`, since you can have other exceptions as well, ex. in repository you could have local data related errors or exceptions as well.
+
+In the last step, before reaching back to the ViewModel the result should be wrapped into a Result, which has Success or Failure states. The **error-handler-core** provides a ResultWrapper class which has 3 cases (Success, Error, Exception). Having two separate cases for failures has the advantage that it is possible to differentiate an expected error from an unexpected one. Imagine an endpoint (.../users/{id}). When a user id is passed, it is an expected outcome that the id is
+not valid and a user with the given id couldn't be found, however, a malformed response is not expected. With this approach, the application can react better to different kinds of failures. In case of a failure, the use case should wrap to Error or Failure based on the type of the failure, with the provided example, the not found failure should be mapped to the Error while the parsing error should be handled as an Exception.
+
+**error-handler-rest** provides a utility method, namely **wrapToResult**, which does this mapping. If you have your own Result wrapping, then stick to it, otherwise, it is recommended to introduce such a mechanism for easier and more clear error handling.
+
+#### View - ViewModel
+
+ If the data layer exposes only this result, the ViewModel can easily handle all the possible cases, ex:
+ 
+```kotlin
+when (val result = getDataUseCase()) {
+  is ResultWrapper.Success -> processData(result.data)
+	is ResultWrapper.Error -> processError(result.exception) // Exception is a DataLayerException
+	is ResultWrapper.Exception -> processException(result.throwable) // All generic exceptions which weren't expected at this point.
+}
+```
+Since the ViewModel should only expose data, it should consume and transform any error coming from the data layer in a consumable form to the View. Here, a lot of things depend on the exact use-case and on the project, but generally speaking, usually some informative message is presented to the user, for example, in form of a SnackBar or Alert or in many other forms.
+
+To keep the result processing and the error handling in the ViewModel, where it belongs, and since a lot of errors are general for almost all of the data layer, it is recommended to create some base error parser/processor. Continuing with Snackbar, but the base idea would work for other solutions as well, an ErrorItem model class can be created which can be easily consumed by the View.
+
+```kotlin
+data class ErrorItem(
+	   val messageRes: Int,
+	   val actionStringRes: Int? = null,
+	   ...
+	)
+```
+
+To handle the common errors in a single place, without duplicating the same logic over and over in all the ViewModels which interact with the data layer, a base error handler implementation is recommended. This can be an injectable class or just a simple top-level function, whichever works best for your project. 
+(To get a better idea, check out the sample app of the linked lib, which handles most of the cases and complies with our internal guideline).
+
+```kotlin
+fun determineUserFriendlyErrorFromResult(result: ResultWrapper.Error): ErrorItem {
+	...
+}
+``` 
+
+This method should handle all the common errors (or error codes, depending on your REST API), generic status codes and so on. After this, your ViewModel should check for specific errors for this data layer call and let the common **handler** to handle the error. And as the last step, the ViewModel has to expose the error to the View (this can be done in many ways, it’s up to you which do you prefer). The View now has the function to consume this exposed error and to present it to the user. This is a repetitive task as well, so it is highly recommended not to duplicate this. It’s up to your project to find a way where it can be reused by all the view classes (example, if you have a base activity/fragment, that seems the right place for such logic).
+
+To see this structure in action, check the sample code for the error-handler library, the interesting part is in `ErrorItem`, `ErrorParserBaseImpl` classes.
+
+
+## How to contribute
+
+The project uses [detekt](https://github.com/detekt/detekt) and lint for static code verifications and [ktlint](https://ktlint.github.io/) for style check. We recommend the usage of the ktlint git hook (installation instructions can be found in the docs). 
+
+- Open a PR with changes with the following format:
+  - Ticket/Issue if applicable
+  - Short description of what is changes
+  - Short description of how to test the introduces changes.
+- Make sure detekt and lint passes for the new PR.
