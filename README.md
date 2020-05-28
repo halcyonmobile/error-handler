@@ -15,15 +15,16 @@ repositories {
    - Add this library to your project
    ```kotlin
 dependencies {
-       // other dependencies
+       // if you need core module only
        implementation "com.halcyonmobile.error-handler:core:<latest_version>"
+       // if you need both core module + rest module
        implementation "com.halcyonmobile.error-handler:rest:<latest_version>"
    }
    ```
    - Use the `RestCallAdapter.Builder` and build your own `CallAdapterFactory` for Retrofit2
    ```kotlin
 val callAdapterFactory = RestCallAdapterFactory.Builder()
-       /* Customize it here. Check his documentation for more */
+       /* Customize it here. Check its documentation for more */
        .build()
    ```
    - Add it to `Retrofit`
@@ -35,23 +36,23 @@ Retrofit.Builder()
    ```
    - Build an `ApiErrorModel`, that represents the model of error that's being returned by your backend, in case something goes wrong.
    
-   - Mark your retrofit methods with @ParsedError, passing your custom ApiErrorModel from the previous step (*more about this on **How it works** section below*)
+   - Mark your retrofit methods with @ParsedError, passing your custom ApiErrorModel from the previous step (*more about this under the **How it works** section below*)
    ```kotlin
-   interface FoodService {
+   interface AuthenticationService {
        
-       //Tip! @ParsedError means this method will throw RemoteExceptions,
+       //Tip! @ParsedError means this method might throw a RemoteException,
        //so it's highly recommended to also add @Throw(RemoteException::class)
        @ParsedError(MyApiErrorModel::class)
-       @POST("food/order")
-       suspend fun orderFood()
+       @POST("auth/login")
+       suspend fun login(@Body loginBody: LoginRequestBody): UserDto
    }
    ```
    
    - That's it! No more hand-done conversions!
 
 ## How it works
-   - When you annotate your retrofit call with the @ParsedError annotation, any exception that will be thrown be it will be automatically converted to a RemoteException type. If you receive an error body from your API, the library will try to parse the body into your model class provided in the ParsedError and if the parsing succeeds, then it will throw an ApiError with the parsed body (you will have to cast to your model class when you want to retrieve it).
-  - If the above parsing failed for any reason, then if the API responded with a 500 Status code, your method will throw an InternalServerError, otherwise, an ErrorPayloadParsingException with the status code of the response will be thrown.
+   - When you annotate your retrofit call with the @ParsedError annotation, any exception that will be thrown will automatically be converted to a RemoteException type. If you receive an error body from your API, the library will try to parse the body into your model class provided in the @ParsedError annotation and if the parsing succeeds, then it will throw an ApiError with the parsed body (you will have to cast to your model class when you want to retrieve it).
+  - If the above parsing failed for any reason, then if the API responded with a 500 Status code, your method will throw an InternalServerError, otherwise an ErrorPayloadParsingException with the status code of the response will be thrown.
 - You can receive two connectivity related errors, one when the device is not connected to the network and one when a timeout happens.
 - If any other error/exception occurs during the HTTP call, your method will throw a ServerCommunicationException, wrapping the original exception. 
 
@@ -78,4 +79,4 @@ Retrofit.Builder()
   - **I have a custom exception instead of ApiError, but I want to log it.**
     - Nothing is easier than that. Just make sure that your custom exception implements the Loggable interface, and the rest is handled during the error conversion. Every RemoteException which implements the Loggable interface is guaranteed to be logged.
   - **I don’t want to handle all of the possible exceptions with `try {} catch() {}` outside the data layer.**
-    - In this case, you can use the ResultWrapper from the error-handler-core if you don’t already have such a mechanism in your project, together with the wrapToResult helper function.
+    - In this case, you can use the ResultWrapper from the error-handler-core together with the wrapToResult helper function, if you don’t already have such a mechanism in your project.
