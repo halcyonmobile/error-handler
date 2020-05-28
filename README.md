@@ -4,7 +4,7 @@
   - **error-handler-rest** - which provides error handling for REST API consumption. Note that this module is built on top of [retrofit-error-wrapping](https://github.com/halcyonmobile/retrofit-error-wrapping) library. This module provides subclasses for DataLayerException with possible failures that can occur during an HTTP call.
 
 ## Setup
-  ###### Latest stable version is `0.1.0`
+  ###### Latest stable version is [ ![Download](https://api.bintray.com/packages/halcyonmobiledevteam/maven/error-handler:core/images/download.svg?version=0.1.0) ](https://bintray.com/halcyonmobiledevteam/maven/error-handler:core/0.1.0/link)
   - Add `jcenter` to your project `build.gradle`
    ```kotlin 
 repositories {
