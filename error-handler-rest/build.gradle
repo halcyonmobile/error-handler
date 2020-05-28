@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation project(":error-handler-core")
+    api project(":error-handler-core")
 
     api "com.halcyonmobile.retrofit-error-parsing:retrofit-error-parsing:1.0.0"
 
@@ -22,3 +22,6 @@ dependencies {
 
 sourceCompatibility = "8"
 targetCompatibility = "8"
+
+project.ext.set("libraryArtifactId", "rest")
+apply plugin: 'com.halcyonmobile.plugin.publish.artifactory.jar-library'
