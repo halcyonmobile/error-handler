@@ -81,11 +81,10 @@ Retrofit.Builder()
   - **I don’t want to handle all of the possible exceptions with `try {} catch() {}` outside the data layer.**
     - In this case, you can use the ResultWrapper from the error-handler-core together with the wrapToResult helper function, if you don’t already have such a mechanism in your project.
     
-    
 
 ## Error handling Recommendations with tips & tricks
 
-The following recommendation works best with MVVM architecture and a separate data layer and with coroutines.
+The following recommendation works best with MVVM architecture, a separate data layer and with coroutines.
 
 #### Data Layer
 
@@ -105,7 +104,7 @@ not valid and a user with the given id couldn't be found, however, a malformed r
  
 ```kotlin
 when (val result = getDataUseCase()) {
-  is ResultWrapper.Success -> processData(result.data)
+    is ResultWrapper.Success -> processData(result.data)
 	is ResultWrapper.Error -> processError(result.exception) // Exception is a DataLayerException
 	is ResultWrapper.Exception -> processException(result.throwable) // All generic exceptions which weren't expected at this point.
 }
@@ -116,10 +115,10 @@ To keep the result processing and the error handling in the ViewModel, where it 
 
 ```kotlin
 data class ErrorItem(
-	   val messageRes: Int,
-	   val actionStringRes: Int? = null,
-	   ...
-	)
+    val messageRes: Int,
+    val actionStringRes: Int? = null,
+    ...
+)
 ```
 
 To handle the common errors in a single place, without duplicating the same logic over and over in all the ViewModels which interact with the data layer, a base error handler implementation is recommended. This can be an injectable class or just a simple top-level function, whichever works best for your project. 
@@ -143,5 +142,5 @@ The project uses [detekt](https://github.com/detekt/detekt) and lint for static 
 - Open a PR with changes with the following format:
   - Ticket/Issue if applicable
   - Short description of what is changes
-  - Short description of how to test the introduces changes.
-- Make sure detekt and lint passes for the new PR.
+  - Short description of how to test the introduced changes.
+- Make sure `detekt` and `lint` passes for the new PR.
