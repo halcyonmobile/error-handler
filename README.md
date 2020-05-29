@@ -21,9 +21,9 @@ dependencies {
        implementation "com.halcyonmobile.error-handler:rest:<latest_version>"
    }
    ```
-   - Use the `RestCallAdapter.Builder` and build your own `CallAdapterFactory` for Retrofit2
+   - Use the `RestHandlerCallAdapter.Builder` and build your own `CallAdapter.Factory` for Retrofit2
    ```kotlin
-val callAdapterFactory = RestCallAdapterFactory.Builder()
+val callAdapterFactory = RestHandlerCallAdapter.Builder()
        /* Customize it here. Check its documentation for more */
        .build()
    ```
