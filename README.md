@@ -105,8 +105,8 @@ not valid and a user with the given id couldn't be found, however, a malformed r
 ```kotlin
 when (val result = getDataUseCase()) {
     is ResultWrapper.Success -> processData(result.data)
-	is ResultWrapper.Error -> processError(result.exception) // Exception is a DataLayerException
-	is ResultWrapper.Exception -> processException(result.throwable) // All generic exceptions which weren't expected at this point.
+    is ResultWrapper.Error -> processError(result.exception) // Exception is a DataLayerException
+    is ResultWrapper.Exception -> processException(result.throwable) // All generic exceptions which weren't expected at this point.
 }
 ```
 Since the ViewModel should only expose data, it should consume and transform any error coming from the data layer in a consumable form to the View. Here, a lot of things depend on the exact use-case and on the project, but generally speaking, usually some informative message is presented to the user, for example, in form of a SnackBar or Alert or in many other forms.
@@ -122,11 +122,11 @@ data class ErrorItem(
 ```
 
 To handle the common errors in a single place, without duplicating the same logic over and over in all the ViewModels which interact with the data layer, a base error handler implementation is recommended. This can be an injectable class or just a simple top-level function, whichever works best for your project. 
-(To get a better idea, check out the sample app of the linked lib, which handles most of the cases and complies with our internal guideline).
+(To get a better idea, check out the sample app).
 
 ```kotlin
 fun determineUserFriendlyErrorFromResult(result: ResultWrapper.Error): ErrorItem {
-	...
+    ...
 }
 ``` 
 
@@ -137,7 +137,7 @@ To see this structure in action, check the sample code for the error-handler lib
 
 ## How to contribute
 
-The project uses [detekt](https://github.com/detekt/detekt) and lint for static code verifications and [ktlint](https://ktlint.github.io/) for style check. We recommend the usage of the ktlint git hook (installation instructions can be found in the docs). 
+The project uses [detekt](https://github.com/detekt/detekt), lint for static code verifications and [ktlint](https://ktlint.github.io/) for style check. We recommend the usage of the ktlint git hook (installation instructions can be found in the docs).
 
 - Open a PR with changes with the following format:
   - Ticket/Issue if applicable
