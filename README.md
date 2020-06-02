@@ -41,7 +41,7 @@ Retrofit.Builder()
    interface AuthenticationService {
        
        //Tip! @ParsedError means this method might throw a RemoteException,
-       //so it's highly recommended to also add @Throw(RemoteException::class)
+       //so it's highly recommended to also add @Throws(RemoteException::class)
        @ParsedError(MyApiErrorModel::class)
        @POST("auth/login")
        suspend fun login(@Body loginBody: LoginRequestBody): UserDto
@@ -88,7 +88,7 @@ The following recommendation works best with MVVM architecture, a separate data 
 
 #### Data Layer
 
-In the Data Layer, each inner method or layer (if there are multiple layers, ex. use-cases) should annotate its methods with the corresponding @Throws annotation and it should throw the exception instead of wrapping it in any kind of wrapper to make it easier to combine method calls without ending up nesting method calls. Only the use-case, or the last step before sending back the result to the ViewModel, should wrap the result. 
+In the Data Layer, each inner method or layer (if there are multiple layers, ex. RemoteSource, Repository) should annotate its methods with the corresponding @Throws annotation and it should throw the exception instead of wrapping it in any kind of wrapper to make it easier to combine method calls without ending up nesting method calls. Only the use-case, or the last step before sending back the result to the ViewModel, should wrap the result. 
 
 The data layer should define a root exception for all data related exceptions, with **error-handler** library this is the `DataLayerException`, from **error-handler-core**. For remote sources, a child hierarchy can be created, in our case, this is the `RemoteException`, from **error-handler-rest**, and a remote source (together with the Retrofit service) should throw only
 remote-related exceptions. Other layers from the data layer, which are not related to remote, should be annotated with the more generic `DataLayerException`, since you can have other exceptions as well, ex. in repository you could have local data related errors or exceptions as well.
