@@ -84,7 +84,7 @@ class RetrofitAnnotationDetector : Detector(), UastScanner {
 
         private fun provideQuickfixForMissingParsedAnnotation(method: UElement): LintFix = LintFix.create()
             .replace()
-            .with("@ParsedError(::class.java) ")
+            .with("@ParsedError(::class) ")
             .range(context.getLocation(method))
             .reformat(true)
             .beginning()
