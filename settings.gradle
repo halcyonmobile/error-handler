@@ -1,2 +1,2 @@
-include ':app', ':core', ':error-handler-rest', ':error-handler-core'
+include ':app', ':core', ':error-handler-rest', ':error-handler-core', ':error-handler-lint'
 rootProject.name='ErrorHandling'

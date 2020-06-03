@@ -1,0 +1,20 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+dependencies {
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    compileOnly "com.android.tools.lint:lint:$lintVersion"
+    compileOnly "com.android.tools.lint:lint-api:$lintVersion"
+}
+
+jar {
+    manifest {
+        attributes('Lint-Registry-v2': 'com.halcyonmobile.errorhandlerlint.IssueRegistry')
+    }
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+project.ext.set("libraryArtifactId", "rest-lint")
+apply plugin: 'com.halcyonmobile.plugin.publish.artifactory.jar-library'
