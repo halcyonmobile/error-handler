@@ -5,7 +5,6 @@ package com.halcyonmobile.errorhandlerlint
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.Category.Companion.CORRECTNESS
 import com.android.tools.lint.detector.api.Detector
-import com.android.tools.lint.detector.api.Detector.UastScanner
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
@@ -18,17 +17,17 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 import java.util.EnumSet
 
-val ISSUE_NO_PARSED_ERROR = Issue.create(
+val MISSING_PARSED_ERROR_ISSUE = Issue.create(
     id = "MissingParsedError",
     briefDescription = "Missing @ParsedError annotations on method",
     explanation = "Retrofit methods should be wrapped with @ParsedError annotation for a proper error handling.",
     category = CORRECTNESS,
     priority = PRIORITY,
     severity = WARNING,
-    implementation = Implementation(RetrofitAnnotationDetector::class.java, EnumSet.of(JAVA_FILE))
+    implementation = Implementation(MissingParsedErrorDetector::class.java, EnumSet.of(JAVA_FILE))
 )
 
-class RetrofitAnnotationDetector : Detector(), UastScanner {
+class MissingParsedErrorDetector : Detector(), Detector.UastScanner {
     companion object {
         val RETROFIT_ANNOTATIONS = listOf(
             "retrofit2.http.GET",
@@ -37,16 +36,16 @@ class RetrofitAnnotationDetector : Detector(), UastScanner {
             "retrofit2.http.DELETE"
         )
 
-        val PARSED_ERROR_REFERENCE = "com.halcyonmobile.errorparsing.ParsedError"
+        const val PARSED_ERROR_REFERENCE = "com.halcyonmobile.errorparsing.ParsedError"
     }
 
     override fun getApplicableUastTypes() = listOf<Class<out UElement>>(
         UClass::class.java
     )
 
-    override fun createUastHandler(context: JavaContext) = AnnotationOrderVisitor(context)
+    override fun createUastHandler(context: JavaContext) = MissingParsedErrorVisitor(context)
 
-    class AnnotationOrderVisitor(private val context: JavaContext) : UElementHandler() {
+    class MissingParsedErrorVisitor(private val context: JavaContext) : UElementHandler() {
         override fun visitClass(node: UClass) {
             // Rather than checking each method, check only interfaces
             // Should be much faster this way.
@@ -74,7 +73,7 @@ class RetrofitAnnotationDetector : Detector(), UastScanner {
 
         private fun reportMissingParsedAnnotations(element: UElement) {
             context.report(
-                ISSUE_NO_PARSED_ERROR,
+                MISSING_PARSED_ERROR_ISSUE,
                 element,
                 context.getNameLocation(element),
                 "Missing @ParsedError annotation!",

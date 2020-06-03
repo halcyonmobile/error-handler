@@ -13,6 +13,6 @@ class IssueRegistry : IssueRegistry() {
     override val issues
         get() = listOf(
             LOGGABLE_MISUSE_ISSUE,
-            ISSUE_NO_PARSED_ERROR
+            MISSING_PARSED_ERROR_ISSUE
         )
 }
