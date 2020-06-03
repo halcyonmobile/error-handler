@@ -1,2 +1,3 @@
+include ':error-handler-lint'
 include ':app', ':core', ':error-handler-rest', ':error-handler-core'
 rootProject.name='ErrorHandling'
