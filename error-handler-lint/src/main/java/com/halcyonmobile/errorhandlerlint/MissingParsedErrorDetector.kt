@@ -17,31 +17,9 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 import java.util.EnumSet
 
-val MISSING_PARSED_ERROR_ISSUE = Issue.create(
-    id = "MissingParsedError",
-    briefDescription = "Missing @ParsedError annotations on method",
-    explanation = "Retrofit methods should be wrapped with @ParsedError annotation for a proper error handling.",
-    category = CORRECTNESS,
-    priority = PRIORITY,
-    severity = WARNING,
-    implementation = Implementation(MissingParsedErrorDetector::class.java, EnumSet.of(JAVA_FILE))
-)
-
 class MissingParsedErrorDetector : Detector(), Detector.UastScanner {
-    companion object {
-        val RETROFIT_ANNOTATIONS = listOf(
-            "retrofit2.http.GET",
-            "retrofit2.http.PUT",
-            "retrofit2.http.POST",
-            "retrofit2.http.DELETE"
-        )
 
-        const val PARSED_ERROR_REFERENCE = "com.halcyonmobile.errorparsing.ParsedError"
-    }
-
-    override fun getApplicableUastTypes() = listOf<Class<out UElement>>(
-        UClass::class.java
-    )
+    override fun getApplicableUastTypes() = listOf<Class<out UElement>>(UClass::class.java)
 
     override fun createUastHandler(context: JavaContext) = MissingParsedErrorVisitor(context)
 
@@ -73,7 +51,7 @@ class MissingParsedErrorDetector : Detector(), Detector.UastScanner {
 
         private fun reportMissingParsedAnnotations(element: UElement) {
             context.report(
-                MISSING_PARSED_ERROR_ISSUE,
+                ISSUE,
                 element,
                 context.getNameLocation(element),
                 "Missing @ParsedError annotation!",
@@ -83,12 +61,33 @@ class MissingParsedErrorDetector : Detector(), Detector.UastScanner {
 
         private fun provideQuickfixForMissingParsedAnnotation(method: UElement): LintFix = LintFix.create()
             .replace()
-            .with("@ParsedError(::class) ")
+            .with("@ParsedError(::class)")
             .range(context.getLocation(method))
             .reformat(true)
             .beginning()
             .name("Add @ParsedError annotation")
             .robot(false)
             .build()
+    }
+
+    companion object {
+        val RETROFIT_ANNOTATIONS = listOf(
+            "retrofit2.http.GET",
+            "retrofit2.http.PUT",
+            "retrofit2.http.POST",
+            "retrofit2.http.DELETE"
+        )
+
+        const val PARSED_ERROR_REFERENCE = "com.halcyonmobile.errorparsing.ParsedError"
+
+        val ISSUE = Issue.create(
+            id = "MissingParsedError",
+            briefDescription = "Missing @ParsedError annotations on method",
+            explanation = "Retrofit methods should be wrapped with @ParsedError annotation for a proper error handling.",
+            category = CORRECTNESS,
+            priority = PRIORITY,
+            severity = WARNING,
+            implementation = Implementation(MissingParsedErrorDetector::class.java, EnumSet.of(JAVA_FILE))
+        )
     }
 }

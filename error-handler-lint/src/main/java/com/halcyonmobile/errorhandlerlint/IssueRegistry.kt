@@ -12,7 +12,7 @@ class IssueRegistry : IssueRegistry() {
 
     override val issues
         get() = listOf(
-            LOGGABLE_MISUSE_ISSUE,
-            MISSING_PARSED_ERROR_ISSUE
+            LoggableInterfaceDetector.ISSUE,
+            MissingParsedErrorDetector.ISSUE
         )
 }

@@ -12,26 +12,9 @@ import com.android.tools.lint.detector.api.Severity
 import org.jetbrains.uast.UClass
 import java.util.EnumSet
 
-val LOGGABLE_MISUSE_ISSUE = Issue.create(
-    id = "LoggableMisuse",
-    briefDescription = "Loggable is for RemoteException",
-    explanation = "Loggable interface is meant to be used for with RemoteException only!",
-    category = CORRECTNESS,
-    priority = PRIORITY,
-    severity = Severity.WARNING,
-    implementation = Implementation(LoggableInterfaceDetector::class.java, EnumSet.of(Scope.JAVA_FILE))
-)
-
 class LoggableInterfaceDetector : Detector(), Detector.UastScanner {
-    companion object {
-        private const val LOGGABLE_INTERFACE = "com.halcyonmobile.errorhandlerrest.logger.Loggable"
-        private const val NETWORK_EXCEPTION_CLASS = "com.halcyonmobile.errorhandlerrest.exception.RemoteException"
-    }
 
-    override fun applicableSuperClasses(): List<String>? = listOf(
-        LOGGABLE_INTERFACE,
-        NETWORK_EXCEPTION_CLASS
-    )
+    override fun applicableSuperClasses(): List<String>? = listOf(LOGGABLE_INTERFACE, NETWORK_EXCEPTION_CLASS)
 
     override fun visitClass(context: JavaContext, declaration: UClass) {
 
@@ -53,10 +36,25 @@ class LoggableInterfaceDetector : Detector(), Detector.UastScanner {
 
     private fun reportMisuseOfLoggableInterface(context: JavaContext, uClass: UClass) {
         context.report(
-            LOGGABLE_MISUSE_ISSUE,
+            ISSUE,
             uClass,
             context.getNameLocation(uClass),
             "Loggable is meant to be used on RemoteException only!"
+        )
+    }
+
+    companion object {
+        private const val LOGGABLE_INTERFACE = "com.halcyonmobile.errorhandlerrest.logger.Loggable"
+        private const val NETWORK_EXCEPTION_CLASS = "com.halcyonmobile.errorhandlerrest.exception.RemoteException"
+
+        val ISSUE = Issue.create(
+            id = "LoggableMisuse",
+            briefDescription = "Loggable is for RemoteException",
+            explanation = "Loggable interface is meant to be used for with RemoteException only!",
+            category = CORRECTNESS,
+            priority = PRIORITY,
+            severity = Severity.WARNING,
+            implementation = Implementation(LoggableInterfaceDetector::class.java, EnumSet.of(Scope.JAVA_FILE))
         )
     }
 }
