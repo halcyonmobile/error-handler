@@ -134,6 +134,14 @@ This method should handle all the common errors (or error codes, depending on yo
 
 To see this structure in action, check the sample code for the error-handler library, the interesting part is in `ErrorItem`, `ErrorParserBaseImpl` classes.
 
+## Lint
+
+The project also features a lint for:
+- **Missing Parsed annotations** - warns user if a method annotated with one of Retrofit2's request-type annotations does not contain the @ParseError annotation as well.
+- **Correct usage of Loggable** - since the `Loggable` interface is meant to be used only on children of `RemoteException`, a warning is displayed if misused.
+
+> :warning: Even though you will include the lint in your project (where you include the `rest` library as well), Android Studio might not highlight it if the module isn't an `android` module. 
+> However, if you run the command manually, the final report will catch the warning, meaning that CI won't have any problem at all. 
 
 ## How to contribute
 
