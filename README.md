@@ -19,8 +19,12 @@ dependencies {
        implementation "com.halcyonmobile.error-handler:core:<latest_version>"
        // if you need both core module + rest module
        implementation "com.halcyonmobile.error-handler:rest:<latest_version>"
+       // if you need lintChecks
+       lintChecks "com.halcyonmobile.error-handler:rest-lint:<latest_version>"
    }
    ```
+   ><sub>NOTE: `lintChecks` requires the `com.android.lint` plugin for non-android modules</sub>
+  
    - Use the `RestHandlerCallAdapter.Builder` and build your own `CallAdapter.Factory` for Retrofit2
    ```kotlin
 val callAdapterFactory = RestHandlerCallAdapter.Builder()
