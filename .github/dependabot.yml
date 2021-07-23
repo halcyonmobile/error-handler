@@ -2,7 +2,7 @@ version: 2
 updates:
   - package-ecosystem: gradle
     directory: "/"
-    target-branch: "develop"
+    target-branch: "master"
     schedule:
       interval: "weekly"
       day: "monday"
