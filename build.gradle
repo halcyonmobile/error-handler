@@ -70,6 +70,18 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+subprojects {
+    repositories {
+        maven {
+            url "https://maven.pkg.github.com/halcyonmobile/halcyon-custom-gradle-publish-plugin"
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
 detekt {
     toolVersion = "$detektVersion"
 
