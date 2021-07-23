@@ -29,7 +29,7 @@ buildscript {
 
         detektVersion = '1.9.1'
 
-        lintVersion = '26.6.1'
+        lintVersion = '27.2.2'
     }
     repositories {
         google()
