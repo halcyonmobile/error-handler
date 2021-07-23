@@ -3,8 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion rootProject.sdkVersion
@@ -104,8 +104,8 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
 
     // Firebase
-    implementation "com.google.firebase:firebase-analytics:$firebaseVersion"
-    implementation "com.google.firebase:firebase-crashlytics:$crashlyticsVersion"
+//    implementation "com.google.firebase:firebase-analytics:$firebaseVersion"
+//    implementation "com.google.firebase:firebase-crashlytics:$crashlyticsVersion"
 
     // Beagle
     debugImplementation "com.github.pandulapeter.beagle:beagle:$beagleVersion"
