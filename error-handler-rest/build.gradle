@@ -7,7 +7,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     api project(":error-handler-core")
 
-    api "com.halcyonmobile.retrofit-error-parsing:retrofit-error-parsing:1.0.0"
+    api "com.halcyonmobile.retrofit-error-parsing:retrofit-error-parsing:1.0.1"
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
@@ -24,4 +24,4 @@ sourceCompatibility = "8"
 targetCompatibility = "8"
 
 project.ext.set("libraryArtifactId", "rest")
-apply plugin: 'com.halcyonmobile.plugin.publish.artifactory.jar-library'
+apply plugin: 'com.halcyonmobile.plugin.publish.custom.jar-library'

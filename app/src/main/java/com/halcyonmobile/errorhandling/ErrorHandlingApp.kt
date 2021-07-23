@@ -2,7 +2,7 @@ package com.halcyonmobile.errorhandling
 
 import android.app.Application
 import android.util.Log
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+//import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.halcyonmobile.errorhandling.core.di.provideCoreModules
 import com.halcyonmobile.errorhandling.feature.featureModule
 import com.pandulapeter.beagle.Beagle
@@ -18,7 +18,7 @@ class ErrorHandlingApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+//        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@ErrorHandlingApp)
@@ -52,9 +52,9 @@ class ErrorHandlingApp : Application() {
             if (priority == Log.VERBOSE || priority == Log.DEBUG) {
                 return
             }
-            FirebaseCrashlytics.getInstance().log(message)
+//            FirebaseCrashlytics.getInstance().log(message)
             if (t != null) {
-                FirebaseCrashlytics.getInstance().recordException(t)
+//                FirebaseCrashlytics.getInstance().recordException(t)
             }
         }
     }
