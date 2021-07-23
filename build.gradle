@@ -63,15 +63,6 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
-subprojects {
-    repositories {
         maven {
             url "https://maven.pkg.github.com/halcyonmobile/halcyon-custom-gradle-publish-plugin"
             credentials {
@@ -80,6 +71,10 @@ subprojects {
             }
         }
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 detekt {
