@@ -27,7 +27,7 @@ buildscript {
         espressoVersion = '3.2.0'
         junitVersion = '4.13'
 
-        detektVersion = '1.9.1'
+        detektVersion = '1.17.1'
 
         lintVersion = '26.6.1'
     }
