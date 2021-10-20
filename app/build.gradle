@@ -16,6 +16,8 @@ android {
         versionName "0.1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
+
+        buildConfigField "String", "BASE_URL", "\"https://warm-tundra-40525.herokuapp.com/\""
     }
     dataBinding {
         enabled = true
@@ -108,9 +110,10 @@ dependencies {
 //    implementation "com.google.firebase:firebase-crashlytics:$crashlyticsVersion"
 
     // Beagle
-    debugImplementation "com.github.pandulapeter.beagle:beagle:$beagleVersion"
-    internalImplementation "com.github.pandulapeter.beagle:beagle:$beagleVersion"
-    releaseImplementation "com.github.pandulapeter.beagle:beagle-noop:$beagleVersion"
+    debugImplementation "com.github.pandulapeter.beagle:$beagleUiType:$beagleVersion"
+    releaseImplementation "com.github.pandulapeter.beagle:noop:$beagleVersion"
+    debugImplementation "com.github.pandulapeter.beagle:log-$beagleNetworkLoggerType:$beagleVersion"
+    releaseImplementation "com.github.pandulapeter.beagle:log-$beagleNetworkLoggerType-noop:$beagleVersion"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 
