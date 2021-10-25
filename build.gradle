@@ -25,7 +25,7 @@ buildscript {
         beagleUiType = 'ui-drawer'
         beagleNetworkLoggerType = "okhttp"
 
-        testRunnerVersion = '1.2.0'
+        testRunnerVersion = '1.4.0'
         espressoVersion = '3.4.0'
         junitVersion = '4.13.2'
 
