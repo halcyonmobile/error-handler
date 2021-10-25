@@ -27,7 +27,7 @@ buildscript {
 
         testRunnerVersion = '1.2.0'
         espressoVersion = '3.4.0'
-        junitVersion = '4.13'
+        junitVersion = '4.13.2'
 
         detektVersion = '1.9.1'
 
