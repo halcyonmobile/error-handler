@@ -115,6 +115,9 @@ dependencies {
     debugImplementation "com.github.pandulapeter.beagle:log-$beagleNetworkLoggerType:$beagleVersion"
     releaseImplementation "com.github.pandulapeter.beagle:log-$beagleNetworkLoggerType-noop:$beagleVersion"
 
+    // Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     testImplementation "junit:junit:$junitVersion"

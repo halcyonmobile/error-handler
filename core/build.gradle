@@ -23,8 +23,6 @@ dependencies {
 
     api "io.insert-koin:koin-core:$koinVersion"
 
-    api 'com.jakewharton.timber:timber:5.0.1'
-
     testImplementation "junit:junit:$junitVersion"
 }
 
