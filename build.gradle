@@ -21,7 +21,7 @@ buildscript {
         firebaseVersion = '17.4.1'
         crashlyticsVersion = '17.0.0'
 
-        beagleVersion = '2.6.4'
+        beagleVersion = '2.6.5'
         beagleUiType = 'ui-drawer'
         beagleNetworkLoggerType = "okhttp"
 
