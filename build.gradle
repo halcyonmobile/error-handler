@@ -6,7 +6,7 @@ buildscript {
 
         kotlinVersion = '1.5.31'
 
-        coroutinesVersion = '1.5.2'
+        coroutinesVersion = '1.6.0'
         navigationVersion = '2.3.5'
         lifecycleVersion = '2.2.0'
         koinVersion = '2.2.3'
