@@ -115,7 +115,7 @@ dependencies {
     debugImplementation "com.github.pandulapeter.beagle:log-$beagleNetworkLoggerType:$beagleVersion"
     releaseImplementation "com.github.pandulapeter.beagle:log-$beagleNetworkLoggerType-noop:$beagleVersion"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
